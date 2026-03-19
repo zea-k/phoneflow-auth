@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,8 +9,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const session: AuthSession | null = getSession();
 
+  useEffect(() => {
+    if (!session) {
+      navigate("/auth");
+    }
+  }, [session, navigate]);
+
   if (!session) {
-    navigate("/auth");
     return null;
   }
 
