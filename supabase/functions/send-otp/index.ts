@@ -89,7 +89,7 @@ Deno.serve(async (req) => {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          from: "NEXTSMS",
+          from: "CHUOKKUUSDA",
           to: normalizedPhone,
           text: `Your OTP code is: ${otp}`,
         }),
