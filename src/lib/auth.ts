@@ -50,6 +50,25 @@ export function clearSession(): void {
   localStorage.removeItem(AUTH_STORAGE_KEY);
 }
 
+export async function signIn(phone: string): Promise<AuthSession> {
+  const { data, error } = await supabase.functions.invoke("sign-in", {
+    body: { phone },
+  });
+
+  if (error) throw new Error(error.message || "Failed to sign in");
+  if (!data?.success) throw new Error(data?.error || "Failed to sign in");
+
+  const session: AuthSession = {
+    access_token: data.access_token,
+    expires_at: data.expires_at,
+    user_id: data.user_id,
+    user: data.user,
+  };
+
+  saveSession(session);
+  return session;
+}
+
 export async function sendOtp(phone: string, full_name?: string) {
   const { data, error } = await supabase.functions.invoke("send-otp", {
     body: { phone, full_name },
